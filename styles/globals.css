@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Noto+Serif+NP+Hmong:wght@500&family=Roboto:wght@300&display=swap');
 html,
 body {
   padding: 0;
@@ -23,4 +24,7 @@ a {
     color: white;
     background: black;
   }
+}
+.card {
+  width: 18rem;
 }
