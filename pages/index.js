@@ -1,10 +1,9 @@
-import ContryComponent from "../components/ContryComponent";
+import HomeComponent from "../components/HomeComponent";
 
 export default function Home() {
   return (
     <>
-      <ContryComponent />
-   
+      <HomeComponent />
     </>
   )
 }

@@ -28,3 +28,15 @@ a {
 .card {
   width: 18rem;
 }
+.page-item {
+  cursor: pointer;
+}
+.pagination {
+  margin-top: 1rem;
+}
+.card-text {
+  margin-bottom: 0 !important;
+}
+.card-title {
+  cursor: pointer;
+}
