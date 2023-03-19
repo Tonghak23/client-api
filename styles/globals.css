@@ -40,3 +40,11 @@ a {
 .card-title {
   cursor: pointer;
 }
+.cover {
+  height: 150px;
+}
+.cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -10,7 +10,7 @@ const LoadingComponent = () => {
                   width: '100%',
               }}
           >
-              <Spin tip="">
+              <Spin>
                   <div className="container-fluid">
                       <div className="row">
                           <div className="col-xl-12">

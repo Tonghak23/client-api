@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react'
 import axios from "axios";
-import { Button, Modal, Alert, Space, Spin, Image } from 'antd';
+import { Button, Modal, Alert, Space, Spin, Image, Dropdown } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import LoadingComponent from './LoadingComponent';
 import PaginationComponent from './PaginationComponent';
@@ -14,6 +14,7 @@ const CountryComponent = () => {
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [countryperPage, setCountryPerPage] = useState(25);
+    const [size, setSize] = useState('large');
 
     const fetchCountry = async () => {
         const { data } = await axios.get(`https://restcountries.com/v3.1/all`);
@@ -22,7 +23,7 @@ const CountryComponent = () => {
 
     useEffect(() => {
         fetchCountry();
-    }, [])
+    }, []);
 
     const findOneCountry = async (name) => {
         if(name) {
@@ -36,10 +37,41 @@ const CountryComponent = () => {
         }
     }
 
+    const handleSortingAsc = async () => {
+        const { data } = await axios.get(`https://restcountries.com/v3.1/all`);
+        const countryAsc = data.sort((a, b) => a.name.official.localeCompare(b.name.official));
+        setCountries(countryAsc);
+    }
+
+    const handleSortingDesc = async () => {
+        const { data } = await axios.get(`https://restcountries.com/v3.1/all`);
+        const countryDesc = data.sort((a, b) => a.name.official.localeCompare(b.name.official)).reverse();
+        setCountries(countryDesc);
+    }
+
 
     const lastIndex = currentPage * countryperPage;
     const firstIndex = lastIndex - countryperPage;
     const currentCountry = countries.slice(firstIndex, lastIndex);
+
+    const items = [
+        {
+            key: 'asc',
+            label: (
+                <a rel="a" onClick={handleSortingAsc}>
+                    A to Z
+                </a>
+            ),
+        },
+        {
+            key: 'desc',
+            label: (
+                <a rel="z" onClick={handleSortingDesc}>
+                    Z to A
+                </a>
+            ),
+        }
+    ];
 
   return (
       <>
@@ -53,6 +85,7 @@ const CountryComponent = () => {
                         </div>
                         <div className="col-lg-7">
                           <h4>{country.name?.official}</h4>
+                          <p>{country?.capital}</p>
                         </div>
                     </div>
                 </div>
@@ -61,25 +94,30 @@ const CountryComponent = () => {
 
           </>)}
           <div className="container py-5">
-              <div className="input-group mb-3 input-group-lg">
-                  <input type="search" onChange={(e) => setSearch(e.target.value)} className="form-control" placeholder="Search any country here..." aria-label="Search any country here..." aria-describedby="inputGroup-sizing-lg" />
-                  <button className="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+                <div className="d-flex justify-content-between">
+                  <div className="mb-3">
+                      <input type="search" onChange={(e) => setSearch(e.target.value)} className="form-control" placeholder="Search country here..." aria-label="Search any country here..." />
+                  </div>
+                  <div>
+                      <Dropdown size={size} menu={{items}}
+                          placement="bottomLeft" arrow>
+                          <Button>Sorting country</Button>
+                      </Dropdown>
+                  </div>
                 </div>
+               
                   <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-                  {currentCountry.filter((value) => {
-                    if(search === '') {
-                        return value;
-                    } else if (
-                        value.name.official.toLowerCase().includes(search.toLocaleLowerCase())   
-                    ) {
-                        return value;
-                    }
-                  })
-                    .map(item => (
+                  {currentCountry.filter((item) => {
+                      return search.toLowerCase() === ''
+                          ? item
+                          : item.name.official.toLowerCase().includes(search);
+                  }).map(item => (
                             <>
                                 <div className="col" key={item.name}>
                                     <div className="card shadow-sm">
-                                        <img src={`${item.flags.png}`} className="bd-placeholder-img card-img-top" width="100%" height="100%" alt="Country" />
+                                        <div className="cover">
+                                            <img src={`${item.flags.png}`} className="bd-placeholder-img card-img-top" width="100%" height="100%" alt="Country" />
+                                        </div>
                                         <div className="card-body">
                                             <p className="card-title" onClick={() => findOneCountry(item.name.official)}>{item.name?.official}</p>
                                             <p className="card-text">{item.idd?.root}{item.idd?.suffixes?.[0] ? item.idd?.suffixes?.[0] : item.idd?.suffixes}</p>
