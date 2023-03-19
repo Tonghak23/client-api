@@ -1,7 +1,6 @@
 import React, {useState, useEffect } from 'react'
 import axios from "axios";
-import { Button, Modal, Alert, Space, Spin, Image, Dropdown } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { Button, Modal, Dropdown } from 'antd';
 import LoadingComponent from './LoadingComponent';
 import PaginationComponent from './PaginationComponent';
 
@@ -36,6 +35,7 @@ const CountryComponent = () => {
             }
         }
     }
+
 
     const handleSortingAsc = async () => {
         const { data } = await axios.get(`https://restcountries.com/v3.1/all`);
@@ -84,8 +84,16 @@ const CountryComponent = () => {
                           </div>      
                         </div>
                         <div className="col-lg-7">
+                          <h4>{country.name?.common}</h4>
                           <h4>{country.name?.official}</h4>
-                          <p>{country?.capital}</p>
+                          <p className="card-text">Capital: {country.capital}</p>
+                          <p className="card-text">Status: {country.status}</p>
+                          <p className="card-text">Region: {country.region}</p>
+                          <p className="card-text">SubRegion: {country.subregion}</p>
+                          <p className="card-text">Continent: {country.continents}</p>
+                          <p className="card-text">Population: {country.population}</p>
+                          <p className="card-text">Area: {country.area}</p>
+                          <p className="card-text">Timezones: {country.timezones}</p>
                         </div>
                     </div>
                 </div>
@@ -142,7 +150,6 @@ const CountryComponent = () => {
                   countryPerPage={countryperPage}
                   setCurrentPage={setCurrentPage}
                   currentPage={currentPage}
-                
               />
               </div>
     </>

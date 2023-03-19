@@ -1,5 +1,4 @@
 import React from 'react'
-import { Pagination } from 'antd';
 
 const PaginationComponent = ({ totalCountry, countryPerPage, currentPage, setCurrentPage}) => {
   let pages = [];
